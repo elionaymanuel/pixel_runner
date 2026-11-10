@@ -2,28 +2,32 @@ import pygame
 import os
 from configs import Configs
 import game_functions
-
+from snail import Snail
+from player import Player
 
 def run_game():
     pygame.init()
-    configs = Configs()
     pygame.display.set_caption('Pixel Runner')
-    screen = pygame.display.set_mode((configs.screen_width, configs.screen_height))
-    screen.fill('White')
-    screen_rect = screen.get_rect()
-    sky_surface = pygame.image.load("graphics/Sky.png")
-    ground_surface = pygame.image.load("graphics/ground.png")
-    ground_rect = ground_surface.get_rect(bottomleft=screen_rect.bottomleft)
+    configs = Configs()
+    snail = Snail(configs)
+    player = Player(configs)
+    
+    
     clock = pygame.time.Clock()
-    print(screen.get_rect())
-    print(screen_rect.topleft)
-    print(screen_rect.bottomleft)
+    
+    print(configs.ground_rect.topright)
     run =  True
     while run:
-        run = game_functions.check_events()
+        game_functions.check_events()
 
-        screen.blit(sky_surface,screen_rect.topleft)
-        screen.blit(ground_surface,ground_rect)
+        configs.screen.blit(configs.sky_surface,configs.screen_rect.topleft)
+        configs.screen.blit(configs.ground_surface,(0,300))
+        configs.screen.blit(snail.snail_surface,snail.rect)
+        configs.screen.blit(player.player_surface,player.rect)
+        game_functions.snail_movement(configs,snail)
+        game_functions.player_movement(configs,player)
+        game_functions.check_player_collide(configs,player,snail)
+        configs.screen.blit(configs.text_surface, (configs.screen_rect.centerx-100,100))
         pygame.display.update()
         clock.tick(configs.fps)
 
