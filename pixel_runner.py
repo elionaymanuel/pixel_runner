@@ -4,6 +4,7 @@ from configs import Configs
 import game_functions
 from snail import Snail
 from player import Player
+from score import Score
 
 def run_game():
     pygame.init()
@@ -11,6 +12,8 @@ def run_game():
     configs = Configs()
     snail = Snail(configs)
     player = Player(configs)
+    score = Score(configs)
+    
     
     
     clock = pygame.time.Clock()
@@ -27,7 +30,9 @@ def run_game():
         game_functions.snail_movement(configs,snail)
         game_functions.player_movement(configs,player)
         game_functions.check_player_collide(configs,player,snail)
-        configs.screen.blit(configs.text_surface, (configs.screen_rect.centerx-100,100))
+        configs.desenha_contorno_texto()
+        configs.screen.blit(configs.text_surface, (configs.text_rect))
+        configs.screen.blit(score.score_txt_surface,(score.rect))
         pygame.display.update()
         clock.tick(configs.fps)
 

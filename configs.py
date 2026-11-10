@@ -18,7 +18,11 @@ class Configs:
         self.test_font = pygame.font.Font("font/Pixeltype.ttf",50)
         #recebe 3 argumentos, string, anti alising e a cor
         self.text_surface = self.test_font.render('pixel runner',False, 'Black')
-        self.text_box = pygame.Rect(150, 80, 500, 80)
+        self.text_rect = self.text_surface.get_rect(center = (self.screen_rect.centerx,50))
+
+    def desenha_contorno_texto(self):
+        pygame.draw.rect(self.screen,'Pink',self.text_rect)#preenchimento
+        pygame.draw.rect(self.screen,'Black',self.text_rect,1,2)#borda
         
         
         
