@@ -11,18 +11,24 @@ class Configs:
         #imagens (chao e ceu)
         self.sky_surface = pygame.image.load("graphics/Sky.png").convert()
         self.ground_surface = pygame.image.load("graphics/ground.png").convert()
-        
+        self.ground_superficie = 300
+        self.gravity = 1
         self.ground_rect = self.ground_surface.get_rect(bottomleft=self.screen_rect.bottomleft)
         #textos
         #self.test_font = pygame.font.Font(None,50)
         self.test_font = pygame.font.Font("font/Pixeltype.ttf",50)
         #recebe 3 argumentos, string, anti alising e a cor
-        self.text_surface = self.test_font.render('pixel runner',False, 'Black')
+        self.text_surface = self.test_font.render('pixel runner',False, (64,64,64))
         self.text_rect = self.text_surface.get_rect(center = (self.screen_rect.centerx,50))
 
-    def desenha_contorno_texto(self):
-        pygame.draw.rect(self.screen,'Pink',self.text_rect)#preenchimento
-        pygame.draw.rect(self.screen,'Black',self.text_rect,1,2)#borda
+        self.game_active = True
+        self.game_over = pygame.font.Font("font/Pixeltype.ttf",80)
+        self.game_over_surface = self.game_over.render('GAME OVER',False, (64,64,64))
+        self.game_over_rect = self.game_over_surface.get_rect(center = (self.screen_rect.centerx,self.screen_rect.centery))
+
+        
+
+    
         
         
         
