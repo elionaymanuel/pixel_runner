@@ -2,7 +2,6 @@ import pygame
 #import sys
 import os
 from configs import Configs
-from random import randint
 
 def check_events(configs, player, obstacles, score):
     """Processa eventos de janela, teclado e mouse."""
@@ -44,11 +43,10 @@ def start_jump(player):
 
 def start_new_game(configs, player, obstacles, score):
     """Reinicia jogador, inimigos e pontuação para uma nova partida."""
-    player.surface_1_rect.midbottom = (80, configs.ground_superficie)
+    player.current_rect.midbottom = (80, configs.ground_superficie)
     player.gravity = 0
     player.on_ground = True
-    obstacles.obstacle_rect_list.clear()
-    obstacles.obstacle_surface_list.clear()
+    obstacles.obstacle_list.clear()
     score.reset_score()
     configs.game_over = False
     configs.game_active = True
@@ -63,8 +61,8 @@ def check_KEYUP_events(event,player):
 def check_player_collide(configs, player, obstacles, score):
     """Encerra a partida quando o jogador colide com algum obstáculo."""
     if any(
-        player.surface_1_rect.colliderect(rect)
-        for rect in obstacles.obstacle_rect_list
+        player.current_rect.colliderect(obstacle_rect)
+        for _, obstacle_rect, _ in obstacles.obstacle_list
     ):
         pygame.time.set_timer(pygame.USEREVENT + 1, 0)
         #score.score_value+=1
@@ -115,16 +113,5 @@ def start_screen(configs, player):
 
 def respaw_enemys(obstacles):
     """Cria um obstáculo fora da tela à direita e o adiciona à lista."""
-    if randint(0,2):
-        obstacle_surface = obstacles.snail_surface
-        ground_height = 300
-    else:
-        obstacle_surface = obstacles.fly_surface
-        ground_height = 210
-
-    obstacle_rect = obstacle_surface.get_rect(
-        bottomright=(randint(900, 1100), ground_height)
-    )
-    obstacles.obstacle_rect_list.append(obstacle_rect)
-    obstacles.obstacle_surface_list.append(obstacle_surface)
+    obstacles.spawn_obstacle()
      

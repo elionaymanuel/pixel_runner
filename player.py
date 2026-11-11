@@ -4,11 +4,16 @@ class Player():
     def __init__(self,configs):
 
         ###imagem1
-        self.surface_1 = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
-        self.surface_2 = pygame.image.load('graphics/Player/player_walk_2.png').convert_alpha()
-        self.player_walk = [self.surface_1,self.surface_2]
+        walk_surface_1 = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
+        walk_surface_2 = pygame.image.load('graphics/Player/player_walk_2.png').convert_alpha()
+        self.player_walk = [walk_surface_1, walk_surface_2]
+        self.player_index = 0
+        self.jump_surface = pygame.image.load('graphics/Player/jump.png').convert_alpha()
         #desenha um retangulo ao redor da surface
-        self.surface_1_rect = self.surface_1.get_rect(midbottom = (80,configs.ground_superficie)) 
+        self.current_surface = self.player_walk[self.player_index]
+        self.current_rect = self.current_surface.get_rect(
+            midbottom=(80, configs.ground_superficie)
+        )
 
         ### stand
         self.stand_surface = pygame.image.load('graphics/Player/player_stand.png').convert_alpha()
@@ -26,19 +31,30 @@ class Player():
         self.on_ground = True
 
     def player_movement (self, configs):
-        if self.surface_1_rect.left>=configs.screen_rect.right:
-            self.surface_1_rect.left+=self.player_velocity
+        if self.current_rect.left>=configs.screen_rect.right:
+            self.current_rect.left+=self.player_velocity
         else:
-            self.surface_1_rect.left = 0
-            self.surface_1_rect.left-=self.player_velocity
+            self.current_rect.left = 0
+            self.current_rect.left-=self.player_velocity
 
     def jump(self, configs):
-        self.surface_1_rect.y += self.gravity
+        self.current_rect.y += self.gravity
         self.gravity += configs.gravity
 
-        if self.surface_1_rect.bottom >= configs.ground_superficie:
-            self.surface_1_rect.bottom = configs.ground_superficie
+        if self.current_rect.bottom >= configs.ground_superficie:
+            self.current_rect.bottom = configs.ground_superficie
             self.gravity = 0
             self.on_ground = True
-        
 
+    def player_animation (self):
+        if not self.on_ground:
+            self.current_surface = self.jump_surface
+        else:
+            self.player_index = (
+                self.player_index + 0.1
+            ) % len(self.player_walk)
+            self.current_surface = self.player_walk[int(self.player_index)]
+
+        midbottom = self.current_rect.midbottom
+        self.current_rect = self.current_surface.get_rect(midbottom=midbottom)
+            
