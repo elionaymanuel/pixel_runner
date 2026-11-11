@@ -5,6 +5,7 @@ class Configs:
         self.screen_width = 800
         self.screen_height = 400
         self.fps = 60
+        self.cor_inicio = (94,129,162)
         self.screen = pygame.display.set_mode((self.screen_width,self.screen_height))
         self.screen.fill('White')
         self.screen_rect = self.screen.get_rect()
@@ -21,13 +22,15 @@ class Configs:
         self.text_surface = self.test_font.render('pixel runner',False, (64,64,64))
         self.text_rect = self.text_surface.get_rect(center = (self.screen_rect.centerx,50))
 
-        self.game_active = True
-        self.game_over = pygame.font.Font("font/Pixeltype.ttf",80)
-        self.game_over_surface = self.game_over.render('GAME OVER',False, (64,64,64))
+        self.game_active = False
+        self.game_over = False
+        self.game_over_font = pygame.font.Font("font/Pixeltype.ttf",80)
+        self.game_over_surface = self.game_over_font.render('GAME OVER',False, (64,64,64))
         self.game_over_rect = self.game_over_surface.get_rect(center = (self.screen_rect.centerx,self.screen_rect.centery))
 
         
-
+        self.game_message = self.test_font.render('Press space to run',False,(111,196,169))
+        self.game_message_rect = self.game_message.get_rect(center= self.screen_rect.midbottom)
     
         
         
